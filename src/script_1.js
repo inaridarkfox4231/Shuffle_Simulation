@@ -1,9 +1,9 @@
 'use strict';
+// エンターキーを押すたびに3つのボールがシャッフルされるアルゴリズム
 let interval = 60; // ボール間の間隔
 const MOVE_FRAME = 30;  // 移動フレーム数
 const COUNT = 10; // シャッフル回数
 let circles = [];
-let moveCircle;
 let three_shuffler;
 let moveState = {wait:0, move:1};
 
@@ -11,14 +11,11 @@ function setup(){
   createCanvas(320, 480);
   fill('blue');   // 中身は青
   stroke('blue'); // 縁取りも青
-  //moveCircle = new circle(100, 100);
   three_shuffler = new shuffler(3);
-  // c.setMoveArray([1, -1, 2]);
   for(let i = 0; i < 3; i++){
     let c = new circle(100 + interval * i, 100);
     circles.push(c);
   }
-  //circles.push(moveCircle);
 }
 
 function draw(){
@@ -131,4 +128,18 @@ function keyTyped(){
 function mouseClicked(){
   if(circles[0].moveOn()){ return; }
   three_shuffler.shufflePrepare(COUNT);
+  console.log("シャッフルの実験")
+  console.log(shuffle([2, 3, 4])) // ただし、同じものが出る場合もあるので、その場合はもう1回やる。
 }
+
+// 問題点は？
+// シャッフル中は再計算不可なんだけれど、その状態を取得するためにcircles[0]に直接アクセスしてる。
+// shufflerとか名付けてるんならシャッフル関連の状態はすべて把握しておくべき。
+
+// 最終的には3つとか4つとか5つとか2x2とか3x3とか選べるようにしたい。
+// そのためにももっと洗練させる必要がある。
+// というか、・・シャッフルって関数あったっけ、あれ使った方がいいかもね。デフォルトであるんだって。
+// ・・まぁ、3x3とかなるとね・・9はさすがにね・・・シャッフル、ああそういえばインターバル問題集の時実装したなぁ。
+// 思えば色んなプログラム書いてきたなぁって走馬燈。
+
+// 2番目以降をシャッフルして1番目とそのうちのどれかを入れ替えれば確実だけどね。
